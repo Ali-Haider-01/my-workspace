@@ -20,7 +20,7 @@ import {
 } from '@workspace/shared';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientRMQ } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 const {
@@ -37,27 +37,27 @@ const {
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(@Inject(SERVICES.USER) private authClient: ClientProxy) {}
+  constructor(@Inject(SERVICES.USER) private readonly userClient: ClientRMQ) {}
 
   @Post('/signUp')
   async signUp(@Body() userDto: UserDto) {
-    return await firstValueFrom(this.authClient.send(SIGN_UP, userDto));
+    return await firstValueFrom(this.userClient.send(SIGN_UP, userDto));
   }
 
   @Post('/logIn')
   async logIn(@Body() loginDto: LogInDto) {
-    return await firstValueFrom(this.authClient.send(LOG_IN, loginDto));
+    return await firstValueFrom(this.userClient.send(LOG_IN, loginDto));
   }
 
   @Post('/generate-otp')
   async generateOTP(@Body() emailDto: EmailDto) {
-    return await firstValueFrom(this.authClient.send(GENERATE_OTP, emailDto));
+    return await firstValueFrom(this.userClient.send(GENERATE_OTP, emailDto));
   }
 
   @Post('/forgot-password')
   async forgotPassword(@Body() forgotPassword: ForgotPasswordDto) {
     return await firstValueFrom(
-      this.authClient.send(FORGOT_PASSWORD, forgotPassword)
+      this.userClient.send(FORGOT_PASSWORD, forgotPassword)
     );
   }
 
@@ -66,7 +66,7 @@ export class UserController {
   @Post('/refresh-token')
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
     return await firstValueFrom(
-      this.authClient.send(REFRESH_TOKEN, refreshTokenDto)
+      this.userClient.send(REFRESH_TOKEN, refreshTokenDto)
     );
   }
 
@@ -74,7 +74,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/get-profile')
   async getProfile(@Request() req) {
-    return await firstValueFrom(this.authClient.send(GET_PROFILE, req.user));
+    return await firstValueFrom(this.userClient.send(GET_PROFILE, req.user));
   }
 
   @ApiBearerAuth()
@@ -85,7 +85,7 @@ export class UserController {
     @Body() changePasswordDto: ChangePasswordDto
   ) {
     return await firstValueFrom(
-      this.authClient.send(CHANGE_PASSWORD, {
+      this.userClient.send(CHANGE_PASSWORD, {
         email: req.user.email,
         changePasswordDto,
       })
@@ -96,6 +96,6 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Patch('/logOut')
   async logOut(@Request() req) {
-    return await firstValueFrom(this.authClient.send(LOG_OUT, req.user.email));
+    return await firstValueFrom(this.userClient.send(LOG_OUT, req.user.email));
   }
 }

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Auth, MESSAGE_PATTERNS, SERVICES, StudentDto, StudentFilterDto } from '@workspace/shared';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientRMQ } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 const {
@@ -29,7 +29,7 @@ const {
 @Auth()
 @ApiTags('student')
 export class StudentController {
-  constructor(@Inject(SERVICES.STUDENT) private studentClient: ClientProxy) { }
+  constructor(@Inject(SERVICES.STUDENT) private readonly studentClient: ClientRMQ) { }
 
   @Get('/all-students')
   async getAllStudents(@Query() studentFilterDto: StudentFilterDto) {

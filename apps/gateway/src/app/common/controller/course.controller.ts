@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Auth, CoursesDto, MESSAGE_PATTERNS, SERVICES } from '@workspace/shared';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientRMQ } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 const {
@@ -29,7 +29,7 @@ const {
 @Auth()
 @ApiTags('course')
 export class CourseController {
-  constructor(@Inject(SERVICES.COURSE) private courseClient: ClientProxy) {}
+  constructor(@Inject(SERVICES.COURSE) private readonly courseClient: ClientRMQ) {}
 
   @Get('/get-course')
   async getCourse() {
