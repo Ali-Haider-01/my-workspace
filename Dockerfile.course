@@ -1,0 +1,8 @@
+FROM node:20-alpine
+
+RUN mkdir -p /var/www/course
+WORKDIR /var/www/course
+ADD . /var/www/course
+RUN npm install -f 
+RUN npx nx build course
+CMD ["node", "./dist/apps/course/main.ts"]
