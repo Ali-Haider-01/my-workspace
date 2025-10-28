@@ -6,15 +6,15 @@ export class Course extends Document {
   @Prop({
     required: true,
   })
-  name: string;
+  name!: string;
   @Prop({
     required: true,
   })
-  teacherName: string;
+  teacherName!: string;
   @Prop()
   price?: number;
   @Prop()
-  isAddedToCart: boolean;
+  isAddedToCart!: boolean;
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);

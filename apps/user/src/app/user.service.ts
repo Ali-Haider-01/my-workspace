@@ -53,7 +53,7 @@ export class UserService {
         },
       },
     ]);
-    if (!user) {
+    if (!user || user.length === 0) {
       throw new NotFoundException('User not found');
     }
     return { user };
@@ -103,28 +103,44 @@ export class UserService {
   }
 
   async logIn(logInDto: LogInDto) {
-    const user = await this.userModel.findOne({ email: logInDto.email });
-    if (!user) {
-      throw new NotFoundException('User not found');
+    try {
+      const user = await this.userModel.findOne({ email: logInDto.email });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      
+      const isMatch = await bcrypt.compare(logInDto.password, user?.password);
+      if (!isMatch) {
+        throw new UnauthorizedException('password is incorrect');
+      }
+      
+      const access_token = this.jwtService.sign(
+        { email: user.email, userId: user._id },
+        { expiresIn: '15m' },
+      );
+      const refresh_token = this.jwtService.sign(
+        { email: user.email, userId: user._id },
+        { expiresIn: '7d' },
+      );
+      
+      const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
+      const hashedAccessToken = await bcrypt.hash(access_token, 10);
+      
+      user.refreshToken = hashedRefreshToken;
+      user.accessToken = hashedAccessToken;
+      await user.save();
+      
+      return { access_token, refresh_token };
+    } catch (error) {
+      // Re-throw known exceptions
+      if (error instanceof NotFoundException || error instanceof UnauthorizedException) {
+        throw error;
+      }
+      
+      // Log unexpected errors and throw generic error
+      console.error('Login error:', error);
+      throw new BadRequestException('Login failed due to server error');
     }
-    const isMatch = await bcrypt.compare(logInDto.password, user?.password);
-    if (!isMatch) {
-      throw new UnauthorizedException('password is incorrect');
-    }
-    const access_token = this.jwtService.sign(
-      { email: user.email, userId: user._id },
-      { expiresIn: '15m' },
-    );
-    const refresh_token = this.jwtService.sign(
-      { email: user.email, userId: user._id },
-      { expiresIn: '7d' },
-    );
-    const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
-    const hashedAccessToken = await bcrypt.hash(access_token, 10);
-    user.refreshToken = hashedRefreshToken;
-    user.accessToken = hashedAccessToken;
-    await user.save();
-    return { access_token, refresh_token };
   }
 
   async changePassword(email: string, changePasswordDto: ChangePasswordDto) {

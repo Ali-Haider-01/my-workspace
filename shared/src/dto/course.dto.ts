@@ -14,7 +14,7 @@ export class CoursesDto {
     example: 'Evening Mathematics',
     description: 'Name of the course',
   })
-  name: string;
+  name!: string;
 
   @IsString()
   @ApiProperty({
@@ -29,7 +29,7 @@ export class CoursesDto {
     example: 2500,
     description: 'Price of the course',
   })
-  price: number;
+  price!: number;
 
   @IsOptional()
   @IsBoolean()

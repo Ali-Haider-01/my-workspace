@@ -1,8 +1,5 @@
 import {
-  Body,
   Controller,
-  Request,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -14,9 +11,7 @@ import {
   RefreshTokenDto,
   UserDto,
 } from '@workspace/shared';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 const {
   SIGN_UP,
@@ -34,50 +29,43 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @MessagePattern(SIGN_UP)
-  signUp(@Body() userDto: UserDto) {
+  signUp(userDto: UserDto) {
     return this.userService.signUp(userDto);
   }
 
   @MessagePattern(LOG_IN)
-  logIn(@Body() loginDto: LogInDto) {
+  logIn(loginDto: LogInDto) {
     return this.userService.logIn(loginDto);
   }
 
   @MessagePattern(GENERATE_OTP)
-  generateOTP(@Body() emailDto: EmailDto) {
+  generateOTP(emailDto: EmailDto) {
     return this.userService.generateOTP(emailDto);
   }
 
   @MessagePattern(FORGOT_PASSWORD)
-  forgotPassword(@Body() forgotPassword: ForgotPasswordDto) {
+  forgotPassword(forgotPassword: ForgotPasswordDto) {
     return this.userService.forgotPassword(forgotPassword);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @MessagePattern(REFRESH_TOKEN)
-  refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+  refreshToken(refreshTokenDto: RefreshTokenDto) {
     return this.userService.refreshToken(refreshTokenDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @MessagePattern(GET_PROFILE)
-  getProfile(@Request() req) {
-    return this.userService.userProfile(req.user);
+  getProfile(@Payload() user: { email: string; userId: string }) {
+    console.log(user,"2");
+    return this.userService.userProfile(user);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @MessagePattern(CHANGE_PASSWORD)
-  changePassword(@Request() req, @Body() changePasswordDto: ChangePasswordDto) {
-    return this.userService.changePassword(req.user.email, changePasswordDto);
+  changePassword(data: { email: string; changePasswordDto: ChangePasswordDto }) {
+    return this.userService.changePassword(data.email, data.changePasswordDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @MessagePattern(LOG_OUT)
-  logOut(@Request() req) {
-    return this.userService.logOut(req.user.email);
+  logOut(email: string) {
+    return this.userService.logOut(email);
   }
 }

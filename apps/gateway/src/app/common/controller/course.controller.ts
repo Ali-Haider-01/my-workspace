@@ -33,46 +33,81 @@ export class CourseController {
 
   @Get('/get-course')
   async getCourse() {
-    return await firstValueFrom(this.courseClient.send(GET_COURSE, {}));
+    try {
+      return await firstValueFrom(this.courseClient.send(GET_COURSE, {}));
+    } catch (error) {
+      console.error('Gateway getCourse error:', error);
+      throw error;
+    }
   }
 
   @Get('/get-cart-course')
   async getCartCourse() {
-    return await firstValueFrom(this.courseClient.send( GET_CART_COURSE, {}));
+    try {
+      return await firstValueFrom(this.courseClient.send( GET_CART_COURSE, {}));
+    } catch (error) {
+      console.error('Gateway getCartCourse error:', error);
+      throw error;
+    }
   }
 
   @Patch('/remove-all-cart-course')
   async removeAllCartCourse() {
-    return await firstValueFrom(
-      this.courseClient.send(REMOVE_ALL_CART_COURSE, {})
-    );
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(REMOVE_ALL_CART_COURSE, {})
+      );
+    } catch (error) {
+      console.error('Gateway removeAllCartCourse error:', error);
+      throw error;
+    }
   }
 
   @Put('/remove-single-cart-course/:id')
   async removeSingleCartCourse(@Param('id') id: string) {
-    return await firstValueFrom(
-      this.courseClient.send(REMOVE_SINGLE_CART_COURSE, id)
-    );
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(REMOVE_SINGLE_CART_COURSE, {id})
+      );
+    } catch (error) {
+      console.error('Gateway removeSingleCartCourse error:', error);
+      throw error;
+    }
   }
 
   @Get('/get-single-course/:id')
   async getCourseById(@Param('id') id: string) {
-    return await firstValueFrom(
-      this.courseClient.send(GET_SINGLE_COURSE, id)
-    );
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(GET_SINGLE_COURSE, id)
+      );
+    } catch (error) {
+      console.error('Gateway getCourseById error:', error);
+      throw error;
+    }
   }
 
   @Post('/add-course')
   async postCourse(@Body() courseDto: CoursesDto) {
-    return await firstValueFrom(
-      this.courseClient.send(ADD_COURSE, courseDto)
-    );
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(ADD_COURSE, courseDto)
+      );
+    } catch (error) {
+      console.error('Gateway postCourse error:', error);
+      throw error;
+    }
   }
 
   @Delete('/delete-course/:id')
   async deleteCourse(@Param('id') id: string) {
-    return await firstValueFrom(
-      this.courseClient.send(DELETE_COURSE, id)
-    );
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(DELETE_COURSE, id)
+      );
+    } catch (error) {
+      console.error('Gateway deleteCourse error:', error);
+      throw error;
+    }
   }
 }

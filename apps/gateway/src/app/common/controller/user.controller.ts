@@ -9,6 +9,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import {
+  Auth,
   ChangePasswordDto,
   EmailDto,
   ForgotPasswordDto,
@@ -41,61 +42,102 @@ export class UserController {
 
   @Post('/signUp')
   async signUp(@Body() userDto: UserDto) {
-    return await firstValueFrom(this.userClient.send(SIGN_UP, userDto));
+    try {
+      return await firstValueFrom(this.userClient.send(SIGN_UP, userDto));
+    } catch (error) {
+      console.error('Gateway signUp error:', error);
+      throw error;
+    }
   }
 
   @Post('/logIn')
   async logIn(@Body() loginDto: LogInDto) {
-    return await firstValueFrom(this.userClient.send(LOG_IN, loginDto));
+    try {
+      return await firstValueFrom(this.userClient.send(LOG_IN, loginDto));
+    } catch (error) {
+      console.error('Gateway login error:', error);
+      throw error;
+    }
   }
 
   @Post('/generate-otp')
   async generateOTP(@Body() emailDto: EmailDto) {
-    return await firstValueFrom(this.userClient.send(GENERATE_OTP, emailDto));
+    try {
+      return await firstValueFrom(this.userClient.send(GENERATE_OTP, emailDto));
+    } catch (error) {
+      console.error('Gateway generateOTP error:', error);
+      throw error;
+    }
   }
 
   @Post('/forgot-password')
   async forgotPassword(@Body() forgotPassword: ForgotPasswordDto) {
-    return await firstValueFrom(
-      this.userClient.send(FORGOT_PASSWORD, forgotPassword)
-    );
+    try {
+      return await firstValueFrom(
+        this.userClient.send(FORGOT_PASSWORD, forgotPassword)
+      );
+    } catch (error) {
+      console.error('Gateway forgotPassword error:', error);
+      throw error;
+    }
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @Post('/refresh-token')
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
-    return await firstValueFrom(
-      this.userClient.send(REFRESH_TOKEN, refreshTokenDto)
-    );
+    try {
+      return await firstValueFrom(
+        this.userClient.send(REFRESH_TOKEN, refreshTokenDto)
+      );
+    } catch (error) {
+      console.error('Gateway refreshToken error:', error);
+      throw error;
+    }
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @Get('/get-profile')
   async getProfile(@Request() req) {
-    return await firstValueFrom(this.userClient.send(GET_PROFILE, req.user));
+    try {
+      console.log(req.user,"1");
+      return await firstValueFrom(this.userClient.send(GET_PROFILE, req.user));
+    } catch (error) {
+      console.error('Gateway getProfile error:', error);
+      throw error;
+    }
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @Patch('/change-password')
   async changePassword(
     @Request() req,
     @Body() changePasswordDto: ChangePasswordDto
   ) {
-    return await firstValueFrom(
-      this.userClient.send(CHANGE_PASSWORD, {
-        email: req.user.email,
-        changePasswordDto,
-      })
-    );
+    try {
+      return await firstValueFrom(
+        this.userClient.send(CHANGE_PASSWORD, {
+          email: req.user.email,
+          changePasswordDto,
+        })
+      );
+    } catch (error) {
+      console.error('Gateway changePassword error:', error);
+      throw error;
+    }
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @Patch('/logOut')
   async logOut(@Request() req) {
-    return await firstValueFrom(this.userClient.send(LOG_OUT, req.user.email));
+    try {
+      return await firstValueFrom(this.userClient.send(LOG_OUT, req.user.email));
+    } catch (error) {
+      console.error('Gateway logOut error:', error);
+      throw error;
+    }
   }
 }

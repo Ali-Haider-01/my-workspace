@@ -7,25 +7,25 @@ export class UserDto {
     example: 'name',
     type: String,
   })
-  name: string;
+  name!: string;
   @IsString()
   @ApiProperty({
     example: '+923123456789',
     type: String,
   })
-  phoneNumber: string;
+  phoneNumber!: string;
   @IsEmail()
   @ApiProperty({
     example: 'email@gmail.com',
     type: String,
   })
-  email: string;
+  email!: string;
   @IsString()
   @ApiProperty({
     example: 'password',
     type: String,
   })
-  password: string;
+  password!: string;
 }
 
 export class LogInDto {
@@ -34,13 +34,13 @@ export class LogInDto {
     example: 'email@gmail.com',
     type: String,
   })
-  email: string;
+  email!: string;
   @IsString()
   @ApiProperty({
     example: 'password',
     type: String,
   })
-  password: string;
+  password!: string;
 }
 
 export class EmailDto {
@@ -49,7 +49,7 @@ export class EmailDto {
     example: 'email@gmail.com',
     type: String,
   })
-  email: string;
+  email!: string;
 }
 
 export class RefreshTokenDto {
@@ -58,7 +58,7 @@ export class RefreshTokenDto {
     example: 'Access refresh token',
     type: String,
   })
-  token: string;
+  token!: string;
 }
 
 export class ForgotPasswordDto {
@@ -67,19 +67,19 @@ export class ForgotPasswordDto {
     example: 'email@gmail.com',
     type: String,
   })
-  email: string;
+  email!: string;
     @IsString()
   @ApiProperty({
     example: 'new password',
     type: String,
   })
-  newPassword: string;
+  newPassword!: string;
    @IsString()
   @ApiProperty({
     example: 'otp',
     type: String,
   })
-  otp: string;
+  otp!: string;
 }
 
 export class ChangePasswordDto {
@@ -88,17 +88,17 @@ export class ChangePasswordDto {
     example: 'old password',
     type: String,
   })
-  oldPassword: string;
+  oldPassword!: string;
   @IsString()
   @ApiProperty({
     example: 'new password',
     type: String,
   })
-  newPassword: string;
+  newPassword!: string;
   @IsString()
   @ApiProperty({
     example: 'confirm password',
     type: String,
   })
-  confirmPassword: string;
+  confirmPassword!: string;
 }

@@ -19,46 +19,42 @@ export class CourseService {
       },
     ]);
   }
-  
-async getCartCourse() {
-  const cartArray = await this.courseModel.find({ isAddedToCart: true }).exec();
 
-  if (!cartArray || cartArray.length === 0) {
-    throw new NotFoundException('Cart is empty');
+  async getCartCourse() {
+    const cartArray = await this.courseModel
+      .find({ isAddedToCart: true })
+      .exec();
+
+    if (!cartArray || cartArray.length === 0) {
+      throw new NotFoundException('Cart is empty');
+    }
+
+    return cartArray;
   }
 
-  return cartArray;
-}
+  async removeSingleCartCourse(payload) {
+     await this.courseModel.findOneAndUpdate({
+      _id: payload.id,
+      isAddedToCart: true,
+    }, { $set: { isAddedToCart: false } });
 
-async removeSingleCartCourse(id: string) {
-  const selectedCartCourse = await this.courseModel.findOne({ _id: id });
-  if (!selectedCartCourse) {
-    throw new NotFoundException('Course not found');
+    return { message: 'Remove selected Cart course successfully' };
   }
 
-  if (!selectedCartCourse.isAddedToCart) {
-    throw new NotFoundException('Course is not in the cart');
+  async removeAllCartCourse() {
+    const cartCourses = await this.courseModel.find({ isAddedToCart: true });
+
+    if (!cartCourses || cartCourses.length === 0) {
+      throw new NotFoundException('No courses found in the cart');
+    }
+
+    await this.courseModel.updateMany(
+      { isAddedToCart: true },
+      { $set: { isAddedToCart: false } }
+    );
+
+    return { message: 'All cart courses removed successfully' };
   }
-
-  selectedCartCourse.isAddedToCart = false;
-  await selectedCartCourse.save();
-  return { message: 'Remove selected Cart course successfully' };
-}
-
-async removeAllCartCourse() {
-  const cartCourses = await this.courseModel.find({ isAddedToCart: true });
-
-  if (!cartCourses || cartCourses.length === 0) {
-    throw new NotFoundException('No courses found in the cart');
-  }
-
-  await this.courseModel.updateMany(
-    { isAddedToCart: true },
-    { $set: { isAddedToCart: false } },
-  );
-
-  return { message: 'All cart courses removed successfully' };
-}
 
   async getCourseById(id: string) {
     const singleCourse = await this.courseModel
@@ -95,5 +91,4 @@ async removeAllCartCourse() {
     }
     return { message: 'course Deleted', course: deletedCourse };
   }
-
 }

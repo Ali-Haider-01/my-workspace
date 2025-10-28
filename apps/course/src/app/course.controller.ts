@@ -1,12 +1,9 @@
 import {
-  Body,
   Controller,
-  Param,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { CourseService } from './course.service';
-import { Auth, CoursesDto, MESSAGE_PATTERNS } from '@workspace/shared';
-import { MessagePattern } from '@nestjs/microservices';
+import { CoursesDto, MESSAGE_PATTERNS } from '@workspace/shared';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 const {
   GET_COURSE,
@@ -18,9 +15,7 @@ const {
   DELETE_COURSE
 } = MESSAGE_PATTERNS.COURSE;
 
-@Controller('course')
-@ApiBearerAuth()
-@Auth()
+@Controller()
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
@@ -40,22 +35,22 @@ export class CourseController {
   }
 
   @MessagePattern(REMOVE_SINGLE_CART_COURSE)
-  removeSingleCartCourse(@Param('id') id: string) {
-    return this.courseService.removeSingleCartCourse(id);
+  removeSingleCartCourse(@Payload() payload) {
+    return this.courseService.removeSingleCartCourse(payload);
   }
 
  @MessagePattern(GET_SINGLE_COURSE)
-  getCourseById(@Param('id') id: string) {
+  getCourseById(id: string) {
     return this.courseService.getCourseById(id);
   }
 
   @MessagePattern(ADD_COURSE)
-  postCourse(@Body() courseDto: CoursesDto) {
+  postCourse(courseDto: CoursesDto) {
     return this.courseService.postCourse(courseDto);
   }
 
  @MessagePattern(DELETE_COURSE)
-  deleteCourse(@Param('id') id: string) {
+  deleteCourse(id: string) {
     return this.courseService.deleteCourse(id);
   }
 }

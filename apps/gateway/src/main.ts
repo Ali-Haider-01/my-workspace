@@ -8,8 +8,7 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
 const app = await NestFactory.create<NestExpressApplication>(GatewayModule);
   const config = app.get<ConfigService>(ConfigService);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
+
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('API')

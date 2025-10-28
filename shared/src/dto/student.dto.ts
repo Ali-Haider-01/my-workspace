@@ -12,15 +12,15 @@ import {
 class AddressDto {
   @IsNumber()
   @ApiProperty({ example: 89 })
-  house: number;
+  house!: number;
 
   @IsNumber()
   @ApiProperty({ example: 2 })
-  street: number;
+  street?: number;
 
   @IsString()
   @ApiProperty({ example: 'lahore' })
-  city: string;
+  city!: string;
 }
 
 export class StudentDto {
@@ -29,14 +29,14 @@ export class StudentDto {
     example: 'name',
     type: String,
   })
-  name: string;
+  name!: string;
 
   @IsInt()
   @ApiProperty({
     example: 18,
     type: Number,
   })
-  age: number;
+  age!: number;
 
   @IsString()
   @ApiProperty({
@@ -54,7 +54,7 @@ export class StudentDto {
     example: 18,
     type: Number,
   })
-  rollNumber: number;
+  rollNumber!: number;
 
 
   @ApiProperty({ 

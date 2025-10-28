@@ -1,12 +1,8 @@
 import {
-  Body,
   Controller,
-  Param,
-  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { StudentService } from './student.service';
-import { Auth, MESSAGE_PATTERNS, StudentDto, StudentFilterDto } from '@workspace/shared';
+import { MESSAGE_PATTERNS, StudentDto, StudentFilterDto } from '@workspace/shared';
 import { MessagePattern } from '@nestjs/microservices';
 
 const {
@@ -18,39 +14,37 @@ const {
   DELETE_STUDENT,
 } = MESSAGE_PATTERNS.STUDENT;
 
-@Controller('student')
-@ApiBearerAuth()
-@Auth()
+@Controller()
 export class StudentController {
   constructor(private readonly studentService: StudentService) { }
 
   @MessagePattern(ALL_STUDENTS)
-  getAllStudents(@Query() studentFilterDto: StudentFilterDto) {
+  getAllStudents(studentFilterDto: StudentFilterDto) {
     return this.studentService.getAllStudents(studentFilterDto);
   }
 
   @MessagePattern(SINGLE_STUDENT)
-  getStudentById(@Param('id') id: string) {
+  getStudentById(id: string) {
     return this.studentService.getStudentById(id);
   }
 
   @MessagePattern(ADD_STUDENT)
-  postStudent(@Body() studentDto: StudentDto) {
+  postStudent(studentDto: StudentDto) {
     return this.studentService.postStudent(studentDto);
   }
 
   @MessagePattern(PUT_STUDENT)
-  putStudent(@Param('id') id: string, @Body() studentDto: StudentDto) {
-    return this.studentService.putStudent(id, studentDto);
+  putStudent(data: { id: string; studentDto: StudentDto }) {
+    return this.studentService.putStudent(data.id, data.studentDto);
   }
 
   @MessagePattern(PATCH_STUDENT)
-  patchStudent(@Param('id') id: string, @Body() studentDto: StudentDto) {
-    return this.studentService.patchStudent(id, studentDto);
+  patchStudent(data: { id: string; studentDto: StudentDto }) {
+    return this.studentService.patchStudent(data.id, data.studentDto);
   }
 
   @MessagePattern(DELETE_STUDENT)
-  deleteStudent(@Param('id') id: string) {
+  deleteStudent(id: string) {
     return this.studentService.deleteStudent(id);
   }
 }

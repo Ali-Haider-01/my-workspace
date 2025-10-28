@@ -3,9 +3,9 @@ import { Prop, Schema } from '@nestjs/mongoose';
 @Schema({versionKey: false})
 export class Address {
   @Prop()
-  house: number;
+  house!: number;
   @Prop()
-  street: number;
+  street!: number;
   @Prop()
-  city: string;
+  city!: string;
 }

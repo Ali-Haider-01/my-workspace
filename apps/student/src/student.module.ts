@@ -14,6 +14,9 @@ const schemaObject = {
   // Mongo DB Configuration
   MONGODB_URI: Joi.string().required(),
   MONGODB_STUDENT: Joi.string().required(),
+
+   // JWT Configuration
+   JWT_KEY: Joi.string().required(),
 };
 
 @Module({

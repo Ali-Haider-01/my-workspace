@@ -7,11 +7,11 @@ export class Student extends Document {
   @Prop({
     required: true,
   })
-  name: string;
+  name!: string;
   @Prop({
     required: true,
   })
-  age: number;
+  age!: number;
   @Prop()
   email?: string;
   @Prop({ type: [Address] })
@@ -19,7 +19,7 @@ export class Student extends Document {
   @Prop({
     required: true,
   })
-  rollNumber: number;
+  rollNumber!: number;
 
   @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Course' })
   courseIds?: string[];

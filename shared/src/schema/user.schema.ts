@@ -4,16 +4,16 @@ import { Document } from 'mongoose';
 @Schema({ versionKey: false })
 export class User extends Document {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true })
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
+  email!: string;
 
   @Prop({ required: true })
-  password: string;
+  password!: string;
 
   @Prop({ required: false })
   refreshToken?: string;

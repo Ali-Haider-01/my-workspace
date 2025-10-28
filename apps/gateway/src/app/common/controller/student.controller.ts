@@ -33,31 +33,61 @@ export class StudentController {
 
   @Get('/all-students')
   async getAllStudents(@Query() studentFilterDto: StudentFilterDto) {
-    return await firstValueFrom(this.studentClient.send(ALL_STUDENTS, studentFilterDto));
+    try {
+      return await firstValueFrom(this.studentClient.send(ALL_STUDENTS, studentFilterDto));
+    } catch (error) {
+      console.error('Gateway getAllStudents error:', error);
+      throw error;
+    }
   }
 
   @Get('/single-student/:id')
   async getStudentById(@Param('id') id: string) {
-    return await firstValueFrom(this.studentClient.send(SINGLE_STUDENT, id));
+    try {
+      return await firstValueFrom(this.studentClient.send(SINGLE_STUDENT, id));
+    } catch (error) {
+      console.error('Gateway getStudentById error:', error);
+      throw error;
+    }
   }
 
   @Post('/add-student')
   async postStudent(@Body() studentDto: StudentDto) {
-    return await firstValueFrom(this.studentClient.send(ADD_STUDENT, studentDto));
+    try {
+      return await firstValueFrom(this.studentClient.send(ADD_STUDENT, studentDto));
+    } catch (error) {
+      console.error('Gateway postStudent error:', error);
+      throw error;
+    }
   }
 
   @Put('/put-student/:id')
   async putStudent(@Param('id') id: string, @Body() studentDto: StudentDto) {
-    return await firstValueFrom(this.studentClient.send(PUT_STUDENT, { id, studentDto }));
+    try {
+      return await firstValueFrom(this.studentClient.send(PUT_STUDENT, { id, studentDto }));
+    } catch (error) {
+      console.error('Gateway putStudent error:', error);
+      throw error;
+    }
   }
 
   @Patch('/patch-student/:id')
   async patchStudent(@Param('id') id: string, @Body() studentDto: StudentDto) {
-    return await firstValueFrom(this.studentClient.send(PATCH_STUDENT, { id, studentDto }));
+    try {
+      return await firstValueFrom(this.studentClient.send(PATCH_STUDENT, { id, studentDto }));
+    } catch (error) {
+      console.error('Gateway patchStudent error:', error);
+      throw error;
+    }
   }
 
   @Delete('/delete-student/:id')
   async deleteStudent(@Param('id') id: string) {
-    return await firstValueFrom(this.studentClient.send(DELETE_STUDENT, id));
+    try {
+      return await firstValueFrom(this.studentClient.send(DELETE_STUDENT, id));
+    } catch (error) {
+      console.error('Gateway deleteStudent error:', error);
+      throw error;
+    }
   }
 }
