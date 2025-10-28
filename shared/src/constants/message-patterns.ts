@@ -14,6 +14,7 @@ export const MESSAGE_PATTERNS = {
       GET_CART_COURSE: 'get-cart-course',
       REMOVE_ALL_CART_COURSE: 'remove-all-cart-course',
       REMOVE_SINGLE_CART_COURSE: 'remove-single-cart-course',
+      ADD_TO_CART: 'add-to-cart',
       GET_SINGLE_COURSE: 'get-single-course',
       ADD_COURSE: 'add-course',
       DELETE_COURSE: 'delete-course',

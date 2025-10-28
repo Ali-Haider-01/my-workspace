@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { GatewayModule } from './gateway.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -9,7 +9,16 @@ async function bootstrap() {
 const app = await NestFactory.create<NestExpressApplication>(GatewayModule);
   const config = app.get<ConfigService>(ConfigService);
 
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    })
+  );
+  
   const swaggerConfig = new DocumentBuilder()
     .setTitle('API')
     .setVersion('1.0.0')

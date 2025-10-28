@@ -44,7 +44,7 @@ export class StudentController {
   @Get('/single-student/:id')
   async getStudentById(@Param('id') id: string) {
     try {
-      return await firstValueFrom(this.studentClient.send(SINGLE_STUDENT, id));
+      return await firstValueFrom(this.studentClient.send(SINGLE_STUDENT, {id}));
     } catch (error) {
       console.error('Gateway getStudentById error:', error);
       throw error;
@@ -84,7 +84,7 @@ export class StudentController {
   @Delete('/delete-student/:id')
   async deleteStudent(@Param('id') id: string) {
     try {
-      return await firstValueFrom(this.studentClient.send(DELETE_STUDENT, id));
+      return await firstValueFrom(this.studentClient.send(DELETE_STUDENT, {id}));
     } catch (error) {
       console.error('Gateway deleteStudent error:', error);
       throw error;

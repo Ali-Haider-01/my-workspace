@@ -12,7 +12,8 @@ const {
   REMOVE_SINGLE_CART_COURSE,
   GET_SINGLE_COURSE,
   ADD_COURSE,
-  DELETE_COURSE
+  DELETE_COURSE,
+  ADD_TO_CART,
 } = MESSAGE_PATTERNS.COURSE;
 
 @Controller()
@@ -34,14 +35,19 @@ export class CourseController {
     return this.courseService.removeAllCartCourse();
   }
 
+  @MessagePattern(ADD_TO_CART)
+  addToCart(@Payload() payload) {
+    return this.courseService.addToCart(payload);
+  }
+
   @MessagePattern(REMOVE_SINGLE_CART_COURSE)
   removeSingleCartCourse(@Payload() payload) {
     return this.courseService.removeSingleCartCourse(payload);
   }
 
  @MessagePattern(GET_SINGLE_COURSE)
-  getCourseById(id: string) {
-    return this.courseService.getCourseById(id);
+  getCourseById(@Payload() payload) {
+    return this.courseService.getCourseById(payload);
   }
 
   @MessagePattern(ADD_COURSE)
@@ -50,7 +56,7 @@ export class CourseController {
   }
 
  @MessagePattern(DELETE_COURSE)
-  deleteCourse(id: string) {
-    return this.courseService.deleteCourse(id);
+  deleteCourse(@Payload() payload) {
+    return this.courseService.deleteCourse(payload);
   }
 }

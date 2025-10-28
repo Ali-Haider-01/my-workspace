@@ -22,6 +22,7 @@ const {
   GET_SINGLE_COURSE,
   ADD_COURSE,
   DELETE_COURSE,
+  ADD_TO_CART,
 } = MESSAGE_PATTERNS.COURSE;
 
 @Controller('course')
@@ -63,6 +64,19 @@ export class CourseController {
     }
   }
 
+  @Put('/add-to-cart/:id')
+  async addToCArt(@Param('id') id: string) {
+    try {
+      return await firstValueFrom(
+        this.courseClient.send(ADD_TO_CART, {id})
+      );
+    } catch (error) {
+      console.error('Gateway addSingleCartCourse error:', error);
+      throw error;
+    }
+  }
+
+
   @Put('/remove-single-cart-course/:id')
   async removeSingleCartCourse(@Param('id') id: string) {
     try {
@@ -79,7 +93,7 @@ export class CourseController {
   async getCourseById(@Param('id') id: string) {
     try {
       return await firstValueFrom(
-        this.courseClient.send(GET_SINGLE_COURSE, id)
+        this.courseClient.send(GET_SINGLE_COURSE, {id})
       );
     } catch (error) {
       console.error('Gateway getCourseById error:', error);
@@ -103,7 +117,7 @@ export class CourseController {
   async deleteCourse(@Param('id') id: string) {
     try {
       return await firstValueFrom(
-        this.courseClient.send(DELETE_COURSE, id)
+        this.courseClient.send(DELETE_COURSE, {id})
       );
     } catch (error) {
       console.error('Gateway deleteCourse error:', error);

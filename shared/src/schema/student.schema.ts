@@ -5,18 +5,25 @@ import { Address } from '@workspace/shared';
 @Schema({ timestamps: true, versionKey: false })
 export class Student extends Document {
   @Prop({
+    type: String,
     required: true,
   })
   name!: string;
+
   @Prop({
+    type: Number,
     required: true,
   })
   age!: number;
+
   @Prop()
   email?: string;
+
   @Prop({ type: [Address] })
   address?: [Address];
+
   @Prop({
+    type: Number,
     required: true,
   })
   rollNumber!: number;

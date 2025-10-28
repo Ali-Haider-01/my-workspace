@@ -54,19 +54,19 @@ export class StudentService {
     ]);
   }
 
-  async postStudent(studentDto: Partial<StudentDto>) {
+  async postStudent(studentDto) {
     const createdStudent = await new this.studentModel({
       ...studentDto,
     });
     return createdStudent.save();
   }
 
-  async getStudentById(id: string) {
+  async getStudentById(payload) {
     const student = await this.studentModel
       .aggregate([
         {
           $match: {
-            _id: new Types.ObjectId(id),
+            _id: new Types.ObjectId(payload.id),
           },
         },
         {
@@ -132,8 +132,8 @@ export class StudentService {
     return updatedStudent;
   }
 
-  async deleteStudent(id: string): Promise<{ message: string; student: any }> {
-    const deletedStudent = await this.studentModel.findByIdAndDelete(id).exec();
+  async deleteStudent(payload): Promise<{ message: string; student: any }> {
+    const deletedStudent = await this.studentModel.findByIdAndDelete(payload.id).exec();
 
     if (!deletedStudent) {
       throw new NotFoundException('Student not found');

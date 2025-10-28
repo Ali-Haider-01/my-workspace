@@ -54,9 +54,8 @@ export class UserController {
   }
 
   @MessagePattern(GET_PROFILE)
-  getProfile(@Payload() user: { email: string; userId: string }) {
-    console.log(user,"2");
-    return this.userService.userProfile(user);
+  getProfile(@Payload() payload) {
+    return this.userService.userProfile(payload);
   }
 
   @MessagePattern(CHANGE_PASSWORD)

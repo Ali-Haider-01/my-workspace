@@ -56,7 +56,6 @@ export class StudentDto {
   })
   rollNumber!: number;
 
-
   @ApiProperty({ 
     example: ['64a823fab7f481d3be03d5b6', '64a823fab7f481d3be03d5b7'],
     type: [String],

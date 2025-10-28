@@ -3,7 +3,7 @@ import {
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { MESSAGE_PATTERNS, StudentDto, StudentFilterDto } from '@workspace/shared';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 const {
   ALL_STUDENTS,
@@ -24,8 +24,8 @@ export class StudentController {
   }
 
   @MessagePattern(SINGLE_STUDENT)
-  getStudentById(id: string) {
-    return this.studentService.getStudentById(id);
+  getStudentById(@Payload() payload) {
+    return this.studentService.getStudentById(payload);
   }
 
   @MessagePattern(ADD_STUDENT)
@@ -44,7 +44,7 @@ export class StudentController {
   }
 
   @MessagePattern(DELETE_STUDENT)
-  deleteStudent(id: string) {
-    return this.studentService.deleteStudent(id);
+  deleteStudent(@Payload() payload) {
+    return this.studentService.deleteStudent(payload);
   }
 }

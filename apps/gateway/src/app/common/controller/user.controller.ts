@@ -101,7 +101,6 @@ export class UserController {
   @Get('/get-profile')
   async getProfile(@Request() req) {
     try {
-      console.log(req.user,"1");
       return await firstValueFrom(this.userClient.send(GET_PROFILE, req.user));
     } catch (error) {
       console.error('Gateway getProfile error:', error);

@@ -37,11 +37,11 @@ export class UserService {
     return user.save();
   }
 
-  async userProfile(req: any) {
+  async userProfile(payload) {
     const user = await this.userModel.aggregate([
       {
         $match: {
-          _id: new Types.ObjectId(req.userId),
+          _id: new Types.ObjectId(payload.userId),
         },
       },
       {

@@ -32,13 +32,22 @@ export class CourseService {
     return cartArray;
   }
 
+  async addToCart(payload) {
+    await this.courseModel.findOneAndUpdate({
+     _id: payload.id,
+     isAddedToCart: false,
+   }, { $set: { isAddedToCart: true } });
+
+   return { message: 'Add course from your cart successfully' };
+ }
+
   async removeSingleCartCourse(payload) {
      await this.courseModel.findOneAndUpdate({
       _id: payload.id,
       isAddedToCart: true,
     }, { $set: { isAddedToCart: false } });
 
-    return { message: 'Remove selected Cart course successfully' };
+    return { message: 'Remove course from your cart successfully' };
   }
 
   async removeAllCartCourse() {
@@ -56,12 +65,12 @@ export class CourseService {
     return { message: 'All cart courses removed successfully' };
   }
 
-  async getCourseById(id: string) {
+  async getCourseById(payload) {
     const singleCourse = await this.courseModel
       .aggregate([
         {
           $match: {
-            _id: new Types.ObjectId(id),
+            _id: new Types.ObjectId(payload.id),
           },
         },
         {
@@ -83,8 +92,8 @@ export class CourseService {
     return createdCourse.save();
   }
 
-  async deleteCourse(id: string) {
-    const deletedCourse = await this.courseModel.findByIdAndDelete(id).exec();
+  async deleteCourse(payload) {
+    const deletedCourse = await this.courseModel.findByIdAndDelete(payload.id).exec();
 
     if (!deletedCourse) {
       throw new NotFoundException('course not found');
