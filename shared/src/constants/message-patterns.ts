@@ -1,7 +1,7 @@
 export const MESSAGE_PATTERNS = {
     USER: {
-      SIGN_UP: 'signUp',
-      LOG_IN: 'logIn',
+      SIGN_UP: 'sign-up',
+      LOG_IN: 'log-in',
       GENERATE_OTP: 'generate-otp',
       FORGOT_PASSWORD: 'forgot-password',
       REFRESH_TOKEN: 'refresh-token',

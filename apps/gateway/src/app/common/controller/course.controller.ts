@@ -25,7 +25,7 @@ const {
   ADD_TO_CART,
 } = MESSAGE_PATTERNS.COURSE;
 
-@Controller('course')
+@Controller()
 @ApiBearerAuth()
 @Auth()
 @ApiTags('course')

@@ -5,7 +5,6 @@ import {
   Patch,
   Post,
   Request,
-  UseGuards,
   Inject,
 } from '@nestjs/common';
 import {
@@ -19,7 +18,6 @@ import {
   SERVICES,
   UserDto,
 } from '@workspace/shared';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ClientRMQ } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
@@ -36,11 +34,11 @@ const {
 } = MESSAGE_PATTERNS.USER;
 
 @ApiTags('user')
-@Controller('user')
+@Controller()
 export class UserController {
   constructor(@Inject(SERVICES.USER) private readonly userClient: ClientRMQ) {}
 
-  @Post('/signUp')
+  @Post('/sign-up')
   async signUp(@Body() userDto: UserDto) {
     try {
       return await firstValueFrom(this.userClient.send(SIGN_UP, userDto));
@@ -50,7 +48,7 @@ export class UserController {
     }
   }
 
-  @Post('/logIn')
+  @Post('/log-in')
   async logIn(@Body() loginDto: LogInDto) {
     try {
       return await firstValueFrom(this.userClient.send(LOG_IN, loginDto));

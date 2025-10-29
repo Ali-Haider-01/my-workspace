@@ -24,7 +24,7 @@ const {
   DELETE_STUDENT,
 } = MESSAGE_PATTERNS.STUDENT;
 
-@Controller('student')
+@Controller()
 @ApiBearerAuth()
 @Auth()
 @ApiTags('student')
